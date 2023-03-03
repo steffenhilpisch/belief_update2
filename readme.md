@@ -12,3 +12,5 @@ Overview for the different files:
 
 The most recent version of the working paper for this project can be found here:
 http://www.larswittrock.eu/files/UpdatingMisinformation.pdf.
+# belief_update
+# belief_update
