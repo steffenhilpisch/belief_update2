@@ -1,0 +1,207 @@
+{% block title %}
+    Instructions
+{% endblock %}
+
+
+{% block scripts %}
+
+    <script>
+        let activeTab = 0;
+
+        function showCurrentTabOnly() {
+            let tabIndex = 0;
+            for (let tab of document.getElementsByClassName('tab')) {
+                tab.style.display = tabIndex === activeTab ? 'block' : 'none';
+                tabIndex++;
+            }
+        }
+
+        showCurrentTabOnly();
+        for (let btn of document.getElementsByClassName('btn-tab')) {
+            btn.onclick = function () {
+                activeTab += parseInt(btn.dataset.offset);
+                showCurrentTabOnly();
+                window.scrollTo(0, 0);
+            }
+        }
+
+        var sr_button_clicks = 0
+        function myFunction() {
+            var x = document.getElementById("scoring_rule");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+            sr_button_clicks += 1
+            document.getElementById("sr_button_clicks").value = sr_button_clicks;
+        }
+
+    </script>
+
+{% endblock %}
+
+
+{% block content %}
+
+    <!-- Alignment of buttons -->
+    <style>
+        .next {float: right; margin: 40px auto;}
+        .back {float: left; margin: 40px auto;}
+    </style>
+
+
+    <!-- Page 1 -->
+    <div class="tab">
+
+        <p>
+            This is a follow-up study. The participants of the first study were shown the following instructions which are important for you as well:
+            <br>
+            <br>
+            There are two urns, one red and one blue, each containing 4 balls as displayed below.
+            All balls are labeled with a letter 'I', the meaning of which will be explained on the next page.
+            One of the two urns will be randomly selected in the beginning.
+            You do not know which urn will be selected. It will remain the same throughout this study.
+        </p>
+        <div>
+            <img src="{{ static 'img/red_or_blue_urn_label.png' }}" style="width:40%;"/>
+        </div>
+        <br>
+        <p>
+            Your <b>task will be to guess which urn you think was selected</b>.
+            To do so you will receive hints about the selected urn in form of reports from participants of the first study.
+            You will get further information on the next page.
+        </p>
+        <p>
+        <button type="button" class="btn btn-primary btn-tab next" data-offset="1">Next</button>
+        </p>
+
+    </div>
+
+    <!-- Page 2 -->
+    <div class="tab">
+
+        <p>
+            The selected urn contained 4 balls, 3 of the same color and 1 of the opposite color, as shown on the previous page.
+            All balls from the selected urn were put into a black box. They were labeled with the letter 'I', which stands for 'informative'.
+            <br>
+            For the moment you do not know the color of the selected urn and therefore the 4 informative balls are displayed in grey (although they have a color, either red or blue).
+            <br><br>
+            The black box also contained 6 other balls that do not come from the urn. These 6 balls were labeled with the letter 'U', which stands for 'uninformative'.
+            Knowing the color of the uninformative balls did not help to identify the selected urn.
+            <b>The black box and the 10 balls inside it remained the same throughout the entire study.</b>
+        </p>
+        <br>
+        <div>
+            <img src="{{ static 'img/black_box.png' }}" style="width:40%;"/>
+        </div>
+        <br>
+        <p>
+            This study has {{ Constants.num_rounds }} rounds in total.
+            In each round you get one of two possible hints:
+            <ul>
+                <li>
+                    <b>A report</b> is shown. You are told the reported probability by participants of the first study.
+                    You do not know if the balls they have seen were informative or uninformative.
+                <li>
+                    No new report is shown, but you receive <b>information about the ball the other participant previously saw</b>.
+                    You will be told if the ball the other person saw before was one of the 4 informative balls or
+                    one of the 6 uninformative balls.
+                    <i>Example:</i> Previously, the other participant saw a red ball.
+                    The ball that was drawn last round was one of the 6 uninformative balls. &nbsp;
+                    <img src="{{ static 'img/red_ball_u.png' }}" width="40" height="auto"/>
+                </li>
+            </ul>
+        </p>
+        <p>
+            In every round you will be asked to make a guess about the urn that has been selected in the beginning.
+            At the end of the study you will be told the color of this urn.
+            You will receive a bonus which depends on the accuracy of your answer to one of the 3 guesses (you do not know which one). The procedure for calculating your bonus is
+            described in detail below. You may skip these details. The important thing is that <b>the procedure guarantees that you should
+            expect to maximize your bonus by reporting what you truly think the chances are in each question.</b>
+        </p>
+
+        <p>
+            <input type="hidden" name="sr_button_clicks" id="sr_button_clicks" value="0"/>
+
+            <button type="button" onclick="myFunction()">Details about the bonus calculation</button>
+
+            <div style="display:none" id="scoring_rule">
+
+            <strong>We apply the following procedure:</strong>
+            <br><br>
+            First, we randomly pick one of the questions. For this question, we calculate the error you made.
+            This is how many percentage points your report was away from 100% (if the RED URN was selected)
+            or from 0% (if the BLUE URN was selected). Then, we plug in the error into the following formula:
+            <br>
+            <div style="text-align: center;">{{ Constants.scoring_rule_factor }} - {{ Constants.scoring_rule_factor }} ∙ error²</div>
+            <br>
+            This will be your bonus (in Euros).
+            <br><br>
+            <strong>EXAMPLE:</strong> Suppose that you report 60% chance that the RED URN was selected in Step 1.
+            Then, your bonus is calculated as follows:
+            <ul>
+                <li>If the urn was RED:
+                <ul>
+                    <li>your error is (100%-60%) = 40%</li>
+                    <li>your bonus is {{ Constants.scoring_rule_factor }}-{{ Constants.scoring_rule_factor }}∙(40%)² = {{example_60_red}} Euros</li>
+                </ul>
+                </li>
+                <li>If the urn was BLUE:
+                <ul>
+                    <li>your error is (60%-0%) = 60%</li>
+                    <li>your bonus is {{ Constants.scoring_rule_factor }}-{{ Constants.scoring_rule_factor }}∙(60%)² = {{example_60_blue}} Euros</li>
+                </ul>
+                </li>
+            </ul>
+            <br>
+            As we have already mentioned, you should expect to maximize your earnings by reporting what you
+            actually think are the chances of a RED URN.
+            <br><br>
+            <strong>EXAMPLE:</strong> If you actually think that the chances are 60% that the RED URN was selected, then:
+            <ul>
+                <li>By reporting 60%, you will make on average <strong>{{example_60_60}} Euros</strong>.</li>
+                <li>By reporting 10%, you will make on average <strong>{{example_60_10}} Euros</strong>.</li>
+                <li>By reporting 100%, you will make on average <strong>{{example_60_100}} Euros</strong>.</li>
+            </ul>
+            <br>
+            As you see <strong>you maximize your earning by reporting exactly 60%</strong>.
+            The further away you report from what you actually think, the less money you should expect to make.
+
+            </div>
+
+        </p>
+
+        <p>
+            <button type="button" class="btn btn-primary btn-tab back" data-offset="-1">Back</button>
+            <button type="button" class="btn btn-primary btn-tab next" data-offset="1">Next</button>
+        </p>
+
+    </div>
+
+    <!-- Page 3 -->
+    <div class="tab">
+
+        <p>
+            Before we start, we need to ensure that you understand the instructions. We ask you to answer 6 simple questions.
+            <b>If you make more than one mistake, we will have to exclude you from the rest of the study.</b>
+        </p>
+        <p>
+            You may view the instructions again by going back to the previous page (click 'back' below).
+        </p>
+        <p>
+            {{ formfield 'test1' }}
+            {{ formfield 'test2' }}
+            {{ formfield 'test3' }}
+            {{ formfield 'test4' }}
+            {{ formfield 'test5' }}
+            {{ formfield 'test6' }}
+        </p>
+
+        <p>
+            <button type="button" class="btn btn-primary btn-tab back" data-offset="-1">Back</button>
+            <button class="btn btn-primary next">Next</button>
+        </p>
+    </div>
+
+{% endblock %}

@@ -1,0 +1,11 @@
+OUTPUT:
+['10', '20', 'uniformative'],
+['', '', 'unkown ()'],
+['', '', 'unkown ()'],
+['', '', 'unkown ()'],
+['', '', 'unkown ()'],
+['', '', 'unkown ()'],
+['11', '22', 'informative'],
+['', '', 'unkown ()'],
+['', '', 'unkown ()'],
+['', '', 'unkown ()'],

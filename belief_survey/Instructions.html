@@ -1,0 +1,159 @@
+{% block title %}
+    Instructions
+{% endblock %}
+
+
+{% block scripts %}
+
+    <script>
+        let activeTab = 0;
+
+        function showCurrentTabOnly() {
+            let tabIndex = 0;
+            for (let tab of document.getElementsByClassName('tab')) {
+                tab.style.display = tabIndex === activeTab ? 'block' : 'none';
+                tabIndex++;
+            }
+        }
+
+        showCurrentTabOnly();
+        for (let btn of document.getElementsByClassName('btn-tab')) {
+            btn.onclick = function () {
+                activeTab += parseInt(btn.dataset.offset);
+                showCurrentTabOnly();
+                window.scrollTo(0, 0);
+            }
+        }
+
+        var sr_button_clicks = 0
+        function myFunction() {
+            var x = document.getElementById("scoring_rule");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+            sr_button_clicks += 1
+            document.getElementById("sr_button_clicks").value = sr_button_clicks;
+        }
+
+    </script>
+
+{% endblock %}
+
+
+{% block content %}
+
+    <!-- Alignment of buttons -->
+    <style>
+        .next {float: right; margin: 40px auto;}
+        .back {float: left; margin: 40px auto;}
+    </style>
+
+
+    <!-- Page 1 -->
+    <div class="tab">
+
+        <p>
+            There are two urns, one red and one blue, each containing 4 balls as displayed below.
+            All balls are labeled with a letter 'I', the meaning of which will be explained on the next page.
+            One of the two urns will be randomly selected in the beginning.
+            You do not know which urn will be selected. It will remain the same throughout this study.
+        </p>
+        <div>
+            <img src="{{ static 'img/red_or_blue_urn_label.png' }}" style="width:40%;"/>
+        </div>
+        <br>
+        <p>
+            Your <b>task will be to guess which urn you think was selected</b>.
+            To do so you will receive hints about the selected urn.
+            This will be described on the next page.
+        </p>
+        <p>
+        <button type="button" class="btn btn-primary btn-tab next" data-offset="1">Next</button>
+        </p>
+
+    </div>
+
+    <!-- Page 2 -->
+    <div class="tab">
+
+        <p>
+            The selected urn contains 4 balls, 3 of the same color and 1 of the opposite color, as shown on the previous page.
+            All balls from the selected urn are put into a black box. They are labeled with the letter 'I', which stands for 'informative'.
+            If you knew the colour of all 4 balls, you would be able to identify the selected urn.
+            For the moment you do not know the color of the selected urn and therefore the 4 informative balls are displayed in grey (although they have a color, either red or blue).
+            <br><br>
+            The black box also contains 6 other balls that do not come from the urn. These 6 balls are labeled with the letter 'U', which stands for 'uninformative'.
+            Knowing the color of the uninformative balls does not help to identify the selected urn.
+            <b>The black box and the 10 balls inside it remain the same throughout the entire study.</b>
+        </p>
+        <br>
+        <div>
+            <img src="{{ static 'img/black_box.png' }}" style="width:40%;"/>
+        </div>
+        <br>
+        <p>
+            This study has {{ Constants.num_rounds }} rounds in total.
+            In each round you get one of two possible hints:
+            <ul>
+                <li>
+                    <b>A ball is drawn</b> from the black box. You are told the color of the ball.
+                    The ball is put back into the box together with the other 9 balls.
+                    You do not know if the balls is informative or uninformative.
+                    <i>Example:</i> A red ball is drawn from the box. &nbsp;
+                    <img src="{{ static 'img/red_ball_q.png' }}" width="40" height="auto"/>
+                </li>
+                <li>
+                    No new ball is drawn, but you receive <b>information about the ball you saw previously</b>.
+                    You will be told if the ball you saw before was one of the 4 informative balls or
+                    one of the 6 uninformative balls.
+                    <i>Example:</i> Previously you saw a red ball.
+                    The ball that was drawn last round was one of the 6 uninformative balls. &nbsp;
+                    <img src="{{ static 'img/red_ball_u.png' }}" width="40" height="auto"/>
+                </li>
+            </ul>
+        </p>
+        <p>
+            In every round you will be asked to make a guess about the urn that has been selected in the beginning.
+            At the end of the study you will be told the color of this urn.
+        </p>
+
+        <p>
+            <input type="hidden" name="sr_button_clicks" id="sr_button_clicks" value="0"/>
+
+        </p>
+
+        <p>
+            <button type="button" class="btn btn-primary btn-tab back" data-offset="-1">Back</button>
+            <button type="button" class="btn btn-primary btn-tab next" data-offset="1">Next</button>
+        </p>
+
+    </div>
+
+    <!-- Page 3 -->
+    <div class="tab">
+
+        <p>
+            Before we start, we need to ensure that you understand the instructions. We ask you to answer 6 simple questions.
+            <b>If you make more than one mistake, we will have to exclude you from the rest of the study.</b>
+        </p>
+        <p>
+            You may view the instructions again by going back to the previous page (click 'back' below).
+        </p>
+        <p>
+            {{ formfield 'test1' }}
+            {{ formfield 'test2' }}
+            {{ formfield 'test3' }}
+            {{ formfield 'test4' }}
+            {{ formfield 'test5' }}
+            {{ formfield 'test6' }}
+        </p>
+
+        <p>
+            <button type="button" class="btn btn-primary btn-tab back" data-offset="-1">Back</button>
+            <button class="btn btn-primary next">Next</button>
+        </p>
+    </div>
+
+{% endblock %}
