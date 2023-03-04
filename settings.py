@@ -4,12 +4,12 @@ SESSION_CONFIGS = [
     dict(
         name='belief_survey',
         display_name='Survey on Belief Updating',
-        app_sequence=[#'Intro_Step1',
-                      'Intro_Step2',
-                      #'belief_survey',
-                       'belief_survey_step2',
+        app_sequence=['Intro_Step1',
+                      #'Intro_Step2',
+                      'belief_survey',
+                       #'belief_survey_step2',
                       #'questionnaire'
-                      #'step1_final_page', # end for step1
+                      'step1_final_page', # end for step1
                       ],
         num_demo_participants=5,
     ),
@@ -26,10 +26,10 @@ SESSION_CONFIG_DEFAULTS = dict(
 
 PARTICIPANT_FIELDS = ['signals',
                      # fields need for first step:
-                     #'ball', 'ball_extra', 'prev_verifications', 'verification_balls', 'verification_rounds', 'belief_q'
+                     'ball', 'ball_extra', 'prev_verifications', 'verification_balls', 'verification_rounds', 'belief_q'
 
                      # fields for second step:
-                      'other_report', "belief_q",
+                      #'other_report', "belief_q",
                       #'aggregate_balls'
                       ]
 SESSION_FIELDS = []
