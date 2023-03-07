@@ -21,7 +21,11 @@ SESSION_CONFIGS = [
 # e.g. self.session.config['participation_fee']
 
 SESSION_CONFIG_DEFAULTS = dict(
-    real_world_currency_per_point=1.00, participation_fee=0.50, doc=""
+    real_world_currency_per_point=1.00,
+    participation_fee=0.50,
+    doc="",
+    use_browser_bots=False,
+    currency_code='GBP'
 )
 
 PARTICIPANT_FIELDS = ['signals',
@@ -37,7 +41,7 @@ SESSION_FIELDS = []
 # ISO-639 code
 LANGUAGE_CODE = 'en'
 
-REAL_WORLD_CURRENCY_CODE = 'EUR'
+REAL_WORLD_CURRENCY_CODE = 'GBP'
 USE_POINTS = False
 
 ADMIN_USERNAME = 'admin'
