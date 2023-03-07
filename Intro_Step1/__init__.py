@@ -63,4 +63,9 @@ class Consent(Page):
     form_fields = ['consent']
 
 
-page_sequence = [Welcome, SorryNoPhone, Consent]
+class ProlificID(Page):
+    form_model = 'player'
+    form_fields = ['prolific_id']
+
+
+page_sequence = [Welcome, SorryNoPhone, Consent, ProlificID]
