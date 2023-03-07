@@ -1,6 +1,6 @@
 from otree.api import *
 
-author = 'Lars Wittrock'
+author = 'Steffen hilpisch'
 
 doc = """
 Intro_Step1 to the study

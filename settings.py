@@ -11,7 +11,7 @@ SESSION_CONFIGS = [
                       #'questionnaire'
                       'step1_final_page', # end for step1
                       ],
-        num_demo_participants=5,
+        num_demo_participants=20,
     ),
 ]
 
@@ -39,7 +39,7 @@ PARTICIPANT_FIELDS = ['signals',
 SESSION_FIELDS = []
 
 # ISO-639 code
-LANGUAGE_CODE = 'en'
+LANGUAGE_CODE = 'en-us'
 
 REAL_WORLD_CURRENCY_CODE = 'GBP'
 USE_POINTS = False
