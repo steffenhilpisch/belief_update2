@@ -26,7 +26,7 @@ SESSION_CONFIG_DEFAULTS = dict(
 
 PARTICIPANT_FIELDS = ['signals',
                      # fields need for first step:
-                     'ball', 'ball_extra', 'prev_verifications', 'verification_balls', 'verification_rounds', 'belief_q'
+                    'ball', 'ball_extra', 'prev_verifications', 'verification_balls', 'verification_rounds', 'belief_q'
 
                      # fields for second step:
                       #'other_report', "belief_q",
