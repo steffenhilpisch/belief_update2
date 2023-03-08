@@ -2,7 +2,7 @@ from os import environ
 
 SESSION_CONFIGS = [
     dict(
-        name='belief-update2',
+        name='belief_update2',
         display_name='Survey on Belief Updating',
         app_sequence=['Intro_Step1',
                       #'Intro_Step2',
@@ -54,11 +54,11 @@ SECRET_KEY = '7277142838663'
 
 ROOMS = [
     dict(
-        name='belief-update2',
-        display_name='belief-update2',
+        name='belief_update2',
+        display_name='belief_update2',
     ),
     dict(
-        name='belief-update2_prolific',
-        display_name='belief-update2_prolific',
+        name='belief_update2_prolific',
+        display_name='belief_update2_prolific',
     ),
 ]
