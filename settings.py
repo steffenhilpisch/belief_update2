@@ -12,6 +12,7 @@ SESSION_CONFIGS = [
                       'step1_final_page', # end for step1
                       ],
         num_demo_participants=20,
+        completionlink = 'https://app.prolific.co/submissions/complete?cc=CWQU9CBV'
     ),
 ]
 
