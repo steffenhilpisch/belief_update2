@@ -33,9 +33,6 @@ class Player(BasePlayer):
     @staticmethod
     def before_next_page(self, timeout_happened):
         self.prolific_id = self.participant.label
-        initial='',
-        label="Prolific ID:",
-
 
     welcome_button_clicks = models.IntegerField(doc="Number of clicks on button about payment details on welcome page")
 
