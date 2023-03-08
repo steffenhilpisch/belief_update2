@@ -30,10 +30,12 @@ class Player(BasePlayer):
 
     is_mobile = models.BooleanField(doc="Automatic check through JS whether gadget is phone or not")
 
-    prolific_id = models.CharField(
+    @staticmethod
+    def before_next_page(self, timeout_happened):
+        self.prolific_id = self.participant.label
         initial='',
         label="Prolific ID:",
-    )
+
 
     welcome_button_clicks = models.IntegerField(doc="Number of clicks on button about payment details on welcome page")
 
@@ -63,9 +65,7 @@ class Consent(Page):
     form_fields = ['consent']
 
 
-class ProlificID(Page):
-    form_model = 'player'
-    form_fields = ['prolific_id']
 
 
-page_sequence = [Welcome, SorryNoPhone, Consent, ProlificID]
+
+page_sequence = [Welcome, SorryNoPhone, Consent]
