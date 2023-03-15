@@ -2,7 +2,7 @@ from otree.api import *
 import random
 import math
 
-from belief_survey_step2.first_step_data import possibilities
+from belief_survey_step2.first_step_data import possibilities, group_weights
 
 author = 'Steffen Hilpisch'
 
@@ -136,7 +136,10 @@ def creating_session(subsession: Subsession):
             participant = player.participant
 
             # select one other player `row` we want to query the current player with
-            participant.other_report = random.choice(possibilities) # eg data [23, 65, "informativ"]
+            # choose group (blue or red and informative or not)
+            # we expect to have more than one element per group
+            choosen_group = random.choices(list(group_weights.keys()), weights=group_weights.values(), k=1)[0]
+            participant.other_report = random.choice(possibilities[choosen_group]) # eg data [23, 65, "informativ"]
 
             # used in the html part to display the correct template (mabye also used somewhere else LOL)
             participant.verification_rounds = [3]

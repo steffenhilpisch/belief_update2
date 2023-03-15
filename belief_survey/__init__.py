@@ -161,7 +161,7 @@ def creating_session(subsession: Subsession):
 
             # round 2:
             # choose random color of the ball
-            signal_to_append = random.choice([sig_red, sig_blue])
+            signal_to_append = sig_blue
             participant.signals.append(signal_to_append)
             participant.ball.append(signal_to_append)
 
