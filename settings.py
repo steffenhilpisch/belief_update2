@@ -11,7 +11,7 @@ SESSION_CONFIGS = [
                       #'questionnaire'
                       'step1_final_page', # end for step1
                       ],
-        num_demo_participants=20,
+        num_demo_participants=10,
     ),
 ]
 
@@ -33,7 +33,7 @@ PARTICIPANT_FIELDS = ['signals',
                     'ball', 'ball_extra', 'prev_verifications', 'verification_balls', 'verification_rounds', 'belief_q'
 
                      # fields for second step:
-                      #'other_report', "belief_q",
+                     # 'other_report', "belief_q",
                       #'aggregate_balls'
                       ]
 SESSION_FIELDS = []
