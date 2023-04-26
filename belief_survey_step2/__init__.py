@@ -2,7 +2,7 @@ from otree.api import *
 import random
 import math
 
-from belief_survey_step2.first_step_data import possibilities, group_weights
+from belief_survey_step2.first_step_data import possibilities
 
 author = 'Steffen Hilpisch'
 
@@ -56,7 +56,8 @@ class Constants(BaseConstants):
     test_questions_solution = [1, 2, 3, 3, 3, 1]  # Correct answers to the 4 test questions. TO UPDATE
     test_questions_required = 5  # Number of correct test questions required to proceed with experiment.
 
-    num_rounds = num_balls + 1
+    num_experiments = 9 # should be 9 in the end.
+    num_rounds = (num_balls + 1) * num_experiments #num_balls + 1
 
 
 class Subsession(BaseSubsession):
@@ -135,11 +136,11 @@ def creating_session(subsession: Subsession):
             # Define participant variables
             participant = player.participant
 
-            # select one other player `row` we want to query the current player with
-            # choose group (blue or red and informative or not)
-            # we expect to have more than one element per group
-            choosen_group = random.choices(list(group_weights.keys()), weights=group_weights.values(), k=1)[0]
-            participant.other_report = random.choice(possibilities[choosen_group]) # eg data [23, 65, "informativ"]
+            # we want to make multiple experiments.
+            participant.other_report = possibilities.copy()
+            # TODO: shuffle
+            # random.shuffle works inplace so we shuffle the copy we made.
+            random.shuffle(participant.other_report)
 
             # used in the html part to display the correct template (mabye also used somewhere else LOL)
             participant.verification_rounds = [3]
@@ -282,9 +283,12 @@ class BeliefInput(Page):
 
     @staticmethod
     def vars_for_template(player: Player):
+        display_round = ((player.round_number-1) % 3) + 1
+        super_round = int((player.round_number-1) / 3)
+
         # defining which ball is displayed -
         def pic_displayed(i):
-            if player.round_number >= i:
+            if display_round >= i:
                 participant = player.participant
                 pic = player.participant.ball[i - 1][2]
             else:
@@ -294,28 +298,30 @@ class BeliefInput(Page):
         # writing signals to data set
         participant = player.participant
         # contains prozent for first two rount and then informativ or fake for 3rd round
-        other_report = player.participant.other_report[player.round_number - 1]
+        other_report = player.participant.other_report[super_round][display_round - 1]
 
         prev_belief = ''
-        if player.round_number > 1:
+        if display_round > 1:
             prev_belief = player.in_round(player.round_number - 1).belief
 
-        pic1 = 'img/grey_ball_q.png' if player.round_number >= 1 else 'img/blank_png.png'
+        pic1 = 'img/grey_ball_q.png' if display_round >= 1 else 'img/blank_png.png'
 
         # in the first round we show nothing
         # in the second we show the ? one
         # in the third round the displayed ball depends on the other reported.
         pic2 = 'img/blank_png.png'
 
-        if player.round_number == 2:
+        if display_round == 2:
             pic2 = 'img/grey_ball_q.png'
-        elif player.round_number == 3:
+        elif display_round == 3:
             # uninformed starts with lowercase u
             # informed starts with lowercase i
             pic2 = f'img/grey_ball_{other_report[0]}.png'
 
         # Return generated variables, used for display of information
         return {
+            'display_round':display_round,
+            'super_round':super_round + 1, # we want to display round 1 till num_experiments
             'pic1': pic1,
             'pic2': pic2,
 
@@ -325,22 +331,25 @@ class BeliefInput(Page):
 
     @staticmethod
     def before_next_page(player: Player, timeout_happened):
+        display_round = ((player.round_number-1) % 3) + 1
+        super_round = int((player.round_number-1) / 3)
         # calculate payoff
-        if player.round_number == player.pay_round:
-            # we do not have a urn
-            player.payoff = Constants.scoring_rule_factor - \
-                            Constants.scoring_rule_factor * math.pow(player.belief / 100, 2)
-            # #TODO: fix we do not have a urn
-            # if player.urn == 0:
-            #     player.payoff = Constants.scoring_rule_factor - \
-            #                     Constants.scoring_rule_factor * math.pow(player.belief / 100, 2)
-            # else:
-            #     player.payoff = Constants.scoring_rule_factor - \
-            #                     Constants.scoring_rule_factor * math.pow(1 - player.belief / 100, 2)
-        else:
-            player.payoff = 0
+        # if player.round_number == player.pay_round:
+        #     # we do not have a urn
+        #     player.payoff = Constants.scoring_rule_factor - \
+        #                     Constants.scoring_rule_factor * math.pow(player.belief / 100, 2)
+        #     # #TODO: fix we do not have a urn
+        #     # if player.urn == 0:
+        #     #     player.payoff = Constants.scoring_rule_factor - \
+        #     #                     Constants.scoring_rule_factor * math.pow(player.belief / 100, 2)
+        #     # else:
+        #     #     player.payoff = Constants.scoring_rule_factor - \
+        #     #                     Constants.scoring_rule_factor * math.pow(1 - player.belief / 100, 2)
+        # else:
+        player.payoff = 0
 
-        if player.round_number == 3: #player.participant.verification_rounds[2]:
+        # TODO: how do we want to save the data???
+        if player.round_number == Constants.num_rounds: #player.participant.verification_rounds[2]:
             # we are in a verification round.
             participant = player.participant
 
@@ -348,23 +357,26 @@ class BeliefInput(Page):
             other_report_round2 = player.participant.other_report[1] # round 2
             other_report_round3 = player.participant.other_report[2] # round 3
 
-            participant.belief_q = [1,
-                                    other_report_round1,
-                                    player.in_round(1).belief,
-                                    2,
-                                    other_report_round2,
-                                    player.in_round(2).belief,
-                                    3,
-                                    other_report_round3, # this is informativ or not informativ
-                                    player.in_round(3).belief,
-                                    ]
+            belief = []
+            for round in range(1, player.round_number + 1):
+                c_display_round = ((round - 1) % 3) + 1
+                c_super_round = int((round - 1) / 3)
 
-            print("belief_q: {participant.belief_q}")
+                belief += [round,
+                           c_super_round,
+                           c_display_round,
+                           player.participant.other_report[c_super_round][c_display_round - 1],
+                           player.in_round(round).belief,
+                           ]
+
+            participant.belief_q = belief
+
+            print(f"belief_q: {participant.belief_q}")
 
 
 # Sequence of pages to be displayed
-page_sequence = [Instructions,
-                 InstructionsFeedback,
+page_sequence = [#Instructions,
+                 #InstructionsFeedback,
                  UrnDraw,
                  BeliefInput
                  ]
