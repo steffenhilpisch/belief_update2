@@ -22,7 +22,7 @@ class Constants(BaseConstants):
     prob_box = 0.5  # distribution of non-urn balls (i.e. uninformative ball distribution 3-3
     num_balls = 2  # number of balls shown - not including verifications
     verifications = [2]
-    scoring_rule_factor = 3
+    scoring_rule_factor = 2
 
     # test questions
     test1_label = '1. What are the chances that the red urn is randomly selected?'
@@ -375,8 +375,8 @@ class BeliefInput(Page):
 
 
 # Sequence of pages to be displayed
-page_sequence = [#Instructions,
-                 #InstructionsFeedback,
+page_sequence = [Instructions,
+                 InstructionsFeedback,
                  UrnDraw,
                  BeliefInput
                  ]

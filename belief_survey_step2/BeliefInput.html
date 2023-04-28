@@ -36,9 +36,7 @@
     </div>
 
     <p>
-
-
-
+<br> <br>
         <b>Background:</b>
         <br>
 
@@ -106,12 +104,12 @@
         <br>
         {% if display_round == 1 %}
             One ball is drawn from the blackbox. This is called <b>Ball 1</b> ball.
-            The other Participant saw the color of the ball, but did not know whether it was informative or uninformative.
+            The other participant saw the color of the ball, but did not know whether it was informative or uninformative.
         {% endif %}
 
         {% if display_round == 2 %}
             Another is drawn from the blackbox. This is called <b>Ball 2</b> ball.
-            The other Participant saw the color of the ball, but did not know whether it was informative or uninformative.
+            The other participant saw the color of the ball, but did not know whether it was informative or uninformative.
         {% endif %}
 
         {% if display_round > 1 and player.treat > 1%}
@@ -126,21 +124,22 @@
         {% endif %}
 
     </p>
+{% if display_round == 1 and super_round > 1 %}
+        <br>
+        <b style="font-size:16px;">Reminder: This is a new experiment. The reports from the previous experiment should be disregarded in your estimation. Focus only on the information provided in this experiment.</b>
+        {% endif %}
 
     <p>
-        <b>New Information:</b>
-        {% if display_round == 1 and super_round > 1 %}
         <br>
-        <b>Note: This is a new Round. bla bla</b>
-        {% endif %}
+        <b>New Information:</b>
         <br>
         {% if display_round < 3%}
-        The other Participant thought it was <b>{{other_report}}%</b> likely that the selected urn is blue.
+        The other participant thought it was <b>{{other_report}}%</b> likely that the selected urn is blue.
         {% endif %}
 
         <!-- check how to handle the treat. -->
         {% if display_round == 3%}
-        The signal the other Participant received was <b>{{other_report}}</b>.
+        The signal that the other participant received was <b>{{other_report}}</b>.
         {% endif %}
     </p>
 

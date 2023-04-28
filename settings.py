@@ -5,11 +5,11 @@ SESSION_CONFIGS = [
         name='belief_update2',
         display_name='Survey on Belief Updating',
         app_sequence=[#'Intro_Step1',
-                      #'Intro_Step2',
+                      'Intro_Step2',
                       #'belief_survey',
                       'belief_survey_step2',
                       #'questionnaire'
-                      'step1_final_page', # end for step1
+                      'final_page', # end for step 1 and 2
                       ],
         num_demo_participants=10,
     ),
@@ -22,7 +22,7 @@ SESSION_CONFIGS = [
 
 SESSION_CONFIG_DEFAULTS = dict(
     real_world_currency_per_point=1.00,
-    participation_fee=0.50,
+    participation_fee=2.00,
     doc="",
     use_browser_bots=False,
     currency_code='GBP'

@@ -97,26 +97,26 @@
         </div>
         <br>
         <p>
-            This study has {{ Constants.num_rounds }} rounds in total.
-            In each round you get one of two possible hints:
+            This study has <b>9 experiments with 3 rounds each</b> in total.
+            In each experiment, the information provided in previous experiments can be disregarded.
+            In each round of the experiments you get one of two possible hints:
             <ul>
                 <li>
                     <b>A report</b> is shown. You are told the reported probability by participants of the first study.
-                    You do not know if the balls they have seen were informative or uninformative.
+                    You do not know if the balls they have seen were informative or uninformative. The picture then shows a grey ball with a question mark.
                 <li>
                     No new report is shown, but you receive <b>information about the ball the other participant previously saw</b>.
                     You will be told if the ball the other person saw before was one of the 4 informative balls or
                     one of the 6 uninformative balls.
-                    <i>Example:</i> Previously, the other participant saw a red ball.
+                    <i>Example:</i>
                     The ball that was drawn last round was one of the 6 uninformative balls. &nbsp;
-                    <img src="{{ static 'img/red_ball_u.png' }}" width="40" height="auto"/>
+                    <img src="{{ static 'img/grey_ball_u.png' }}" width="40" height="auto"/>
                 </li>
             </ul>
         </p>
         <p>
             In every round you will be asked to make a guess about the urn that has been selected in the beginning.
-            At the end of the study you will be told the color of this urn.
-            You will receive a bonus which depends on the accuracy of your answer to one of the 3 guesses (you do not know which one). The procedure for calculating your bonus is
+            You will receive a bonus which depends on the accuracy of your answer to one of the estimmates (you do not know which one). The procedure for calculating your bonus is
             described in detail below. You may skip these details. The important thing is that <b>the procedure guarantees that you should
             expect to maximize your bonus by reporting what you truly think the chances are in each question.</b>
         </p>
