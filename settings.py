@@ -22,10 +22,10 @@ SESSION_CONFIGS = [
 
 SESSION_CONFIG_DEFAULTS = dict(
     real_world_currency_per_point=1.00,
-    participation_fee=2.00,
+    participation_fee=1.50,
     doc="",
     use_browser_bots=False,
-    currency_code='GBP'
+    currency_code='EUR'
 )
 
 PARTICIPANT_FIELDS = ['signals',
